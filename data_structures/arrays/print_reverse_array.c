@@ -3,7 +3,7 @@ Given the size and the elements of array A, print all the elements in reverse or
 
 Input:
 First line of input contains, N - size of the array.
-Following N lines, each contains one integer, i{th} element of the array i.e. A[i]. 
+Following N lines, each contains one integer, i{th} element of the array i.e. A[i].
 */
 
 #include <stdio.h>
