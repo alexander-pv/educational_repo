@@ -1,5 +1,5 @@
 This is test file for space counter test.
-New line
+New line,
 Multiple spaces   s   p a     c  e           s
 Tabs	1	2	3
 /
