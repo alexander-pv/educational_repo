@@ -8,6 +8,7 @@
 
 
 """
+import bisect
 import cProfile
 import random
 from typing import Tuple

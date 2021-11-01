@@ -9,6 +9,7 @@
 def binary_search(array_a: list, k: int) -> int:
     """
     Simple binary search algorithm
+    Invariant: start <= m <= end
     :param array_a: list, A[1…n]
     :param k:       int,
     :return:        int
