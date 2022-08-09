@@ -4,86 +4,78 @@
 Первая строка входа содержит число операций. Каждая из последующих n строк задают операцию одного
 из следующих двух типов: Insert x, ExtractMax.
 Первая операция добавляет число x в очередь с приоритетами, вторая — извлекает максимальное число и выводит его.
-
-Дорешать.
 """
 
 
 class MaxHeap:
-    def __init__(self):
+
+    def __init__(self, capacity: int):
         self.array = []
-        self.last_pos = 0
+        self.capacity = capacity
         self.heap_size = 0
 
-    def insert(self, p):
-        self.array.append(p)
-        self.last_pos = len(self.array) - 1
-        self.heap_size += 1
-        self.sift_up(self.last_pos)
+    def parent(self, i: int) -> int:
+        out = (i - 1) // 2
+        assert out >= 0
+        return out
 
-    def sift_up(self, idx):
-        parent_idx = (idx - 1)//2
-        if idx > 0:
-            node_p = self.array[idx]
-            node_parent_p = self.array[parent_idx]
-            if node_p > node_parent_p:
-                self.array[idx] = node_parent_p
-                self.array[parent_idx] = node_p
-            self.sift_up(parent_idx)
+    def left_child(self, i: int) -> int:
+        return 2 * i + 1
 
-    def sift_down(self, idx):
+    def right_child(self, i: int) -> int:
+        return 2 * i + 2
 
-        node_p = self.array[idx]
+    def sift_up(self, i: int):
+        while i > 0 and self.array[self.parent(i)] < self.array[i]:
+            self.array[self.parent(i)], self.array[i] = self.array[i], self.array[self.parent(i)]
+            i = self.parent(i)
 
-        child0_idx = int(2 * idx + 1)
-        child1_idx = int(2 * idx + 2)
+    def sift_down(self, i: int):
+        max_idx = i
+        l, r = self.left_child(i), self.right_child(i)
+        if l < self.heap_size and self.array[l] > self.array[max_idx]:
+            max_idx = l
+        if r < self.heap_size and self.array[r] > self.array[max_idx]:
+            max_idx = r
+        if i != max_idx:
+            self.array[i], self.array[max_idx] = self.array[max_idx], self.array[i]
+            self.sift_down(max_idx)
 
-        if (child0_idx < self.heap_size) & (child1_idx < self.heap_size):
+    def insert(self, x: int):
+        if self.capacity == self.heap_size:
+            raise ValueError('Limit of Heap capacity')
+        else:
+            self.heap_size += 1
+            self.array.insert(self.heap_size - 1, x)
+            self.sift_up(self.heap_size - 1)
 
-            node_child0_p = self.array[child0_idx]
-            node_child1_p = self.array[child1_idx]
-
-            if node_child0_p > node_child1_p:
-                chosen_child = node_child0_p
-                child_idx = child0_idx
-            else:
-                chosen_child = node_child1_p
-                child_idx = child1_idx
-
-            if chosen_child > node_p:
-                self.array[child_idx] = node_p
-                self.array[idx] = chosen_child
-
-            self.sift_down(child_idx)
-
-        elif (child0_idx < self.heap_size) & (child1_idx > self.heap_size):
-
-            chosen_child = self.array[child0_idx]
-            child_idx = child0_idx
-            if chosen_child > node_p:
-                self.array[child_idx] = node_p
-                self.array[idx] = chosen_child
-
-            self.sift_down(child_idx)
-
-    def extract_max(self):
-        max_val = self.array.pop(0)
+    def extract_max(self) -> int:
+        out = self.array.pop(0)
         self.heap_size -= 1
-        self.last_pos = len(self.array) - 1
-        if self.heap_size > 1:
+        if self.heap_size > 0:
+            last = self.array.pop(self.heap_size - 1)
+            self.array.insert(0, last)
             self.sift_down(0)
-            self.sift_up(self.last_pos)
-        return max_val
+        return out
+
+    def build_heap(self, arr: list):
+        n = len(arr)
+        self.array = arr
+        self.heap_size = n
+        for i in range(n // 2, -1, -1):
+            self.sift_down(i)
 
 
 if __name__ == '__main__':
 
     n = int(input())
-    heap = MaxHeap()
+    heap = MaxHeap(100)
     for _ in range(n):
         op = input()
         if op == 'ExtractMax':
-            print(heap.extract_max())
+            res = heap.extract_max()
+            if res:
+                print(res)
         else:
             val = int(op.split(' ')[-1])
             heap.insert(val)
