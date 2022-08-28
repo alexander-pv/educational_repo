@@ -73,7 +73,7 @@ def test():
         min_heap.build_heap(arr)
 
 
-def task():
+def run_task():
     n = int(input())
     data = [int(x) for x in input().split(' ')]
     min_heap = MinHeap(n + 1)
@@ -87,5 +87,5 @@ def task():
 
 
 if __name__ == '__main__':
-    # test()
-    task()
+    test()
+    # run_task()
