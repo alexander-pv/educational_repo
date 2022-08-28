@@ -79,5 +79,6 @@ def test():
 
 
 if __name__ == '__main__':
-    # print(is_balanced(txt=input()))
     test()
+    # print(is_balanced(txt=input()))
+
