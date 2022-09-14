@@ -1,1 +1,0 @@
-To define a structure, you must use the struct statement.
